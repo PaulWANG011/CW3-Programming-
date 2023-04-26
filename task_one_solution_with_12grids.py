@@ -151,13 +151,13 @@ def check_solution(grid, n_rows, n_cols):
     return True
 
 
-def the_amount_of_numbers(grid, n_cols, n_rows, which_row, which_coulm):
+def the_missing_numbers(grid, n_cols, n_rows, which_row, which_coulm):
     '''the arguemnts are grid=the grid we need to solve,
     n_cols and n_rows=the number of colums and rows in each sequare in the grid,
-     which_eow and which_coulm= the colum and row the 0 in(location of 0),
+     which_reow and which_coulm= the colum and row the 0 in(location of 0),
     this function will be called in find empty function to select the empty location with the fewest number of variable options to fill'''
-    numbers_list = []
-    for i in range(n_cols):
+    numbers_list = []#list to collect numbers that can not be added to the empty(0)
+    for i in range(n_cols):#collecting numbers in the same sequare
         rows = (i * n_rows, (i + 1) * n_rows)
         for j in range(n_rows):
             cols = (j * n_cols, (j + 1) * n_cols)
@@ -169,16 +169,18 @@ def the_amount_of_numbers(grid, n_cols, n_rows, which_row, which_coulm):
                 for i in square:
                     if i !=0:
                         numbers_list.append(i)  # add the numbers of the square
-    for i in grid[which_row]:
+    for i in grid[which_row]:#collecting numbers in the same row
         if i != 0:
             numbers_list.append(i)  # add the numbers in the row
-    for i in range(0, n_cols * n_rows):
+    for i in range(0, n_cols * n_rows):#collecting numbers in the same colum
         colum_number = grid[i][which_coulm]
         if colum_number!=0:
             numbers_list.append(colum_number)  # add the numbers in the same colum
-
-    return list(set(numbers_list)) # calculate the amount of numbers that can not be replaced by the zero
-
+    numbers_list=set(numbers_list)
+    all_numbers=[*range(1,n_cols*n_rows+1)]#all numbers that can be added to the soduco
+    all_numbers=set(all_numbers)
+    possiple_numbers=all_numbers.symmetric_difference(numbers_list)#all possiple numbers that can be added to the empety space(0)
+    return list(possiple_numbers)
 
 def find_empty(grid, n_col, n_row):
     '''
@@ -188,19 +190,28 @@ def find_empty(grid, n_col, n_row):
 	args: grid
 	return: A tuple (i,j) where i and j are both integers, or None
 	'''
-    for i in range(len(grid)):
+    list=[]
+    for i in range(len(grid)):#this for loop collect the amout of possile numbers for every empty(0)
         row = grid[i]
 
         for j in range(len(row)):
             if grid[i][j] == 0:
-                if len(the_amount_of_numbers(grid, n_col, n_row, i, j))==n_row*n_col-1:
+                b=len(the_missing_numbers(grid,n_col,n_row,i,j))
+                list.append(b)
+
+    for i in range(len(grid)):#this for loop return the fiewset possipility
+        row = grid[i]
+
+        for j in range(len(row)):
+            if grid[i][j] == 0:
+                if len(the_missing_numbers(grid, n_col, n_row, i, j)) == min(list):
                     return (i, j)
-    for i in range(len(grid)):
+    for n in range(len(grid)):#this for loop help increasing the velocity of the code
         row = grid[i]
 
-        for j in range(len(row)):
+        for m in range(len(row)):
             if grid[i][j] == 0:
-                return (i,j)
+                return (i, j)
     return None
 
 
@@ -231,7 +242,7 @@ def recursive_solve(grid, n_rows, n_cols):
 
     # Loop through possible values
     for i in range(1, n + 1):
-        if i not in the_amount_of_numbers(grid,n_cols,n_rows,row,col):
+        if i in the_missing_numbers(grid,n_cols,n_rows,row,col):#add to increase the velocity
         # Place the value into the grid
             grid[row][col] = i
         # Recursively solve the grid
