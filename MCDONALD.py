@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon May  1 16:40:30 2023
-
-@author: MCDONALD
-"""
 
 def print_grid(grid):
     for i in range(len(grid)):
