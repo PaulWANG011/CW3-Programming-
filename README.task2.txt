@@ -1,0 +1,1 @@
+In our task2, first open terminal and use cd to change to our repository and then type: python tasktwosolution.py -explain to run task2.1, python tasktwosolution.py -file to run task2.2, python tasktwosolution.py -hint -N to run task2.3, python tasktwosolution.py -profile to run task2.4 for the graph. 
