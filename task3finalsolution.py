@@ -116,6 +116,6 @@ success, solved_grid = solve_sudoku(grid)
 if success:
     print("Sudoku solved:")
     pprint.pprint(solved_grid)
-    print(f"Sudoku solved in {run_time:.2f} s")
+    print(f"Sudoku solved in {run_time:.6f} s")
 else:
     print("Sudoku unsolvable.")
